@@ -83,3 +83,11 @@ export interface Media{
     updatedAt?: string;
     __v?: number;
 }
+
+export interface User{
+    name?:string;
+    email:string;
+    password:string;
+    mobile?:string;
+    role?:string;
+}

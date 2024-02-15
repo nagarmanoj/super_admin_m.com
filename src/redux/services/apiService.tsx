@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { RootState } from '../store/index';
 
 import { BASE_URL } from "../../config";
+import { User } from './type';
 
 export const apiService = createApi({
     reducerPath:'apiService',
@@ -17,31 +18,30 @@ export const apiService = createApi({
             return headers
         }
     }),
-    tagTypes:["Brand","Product","Category","Color"],
+    tagTypes:["Brand","Product","Category","Color","User"],
     endpoints: (builder) =>({
-        loginUser: builder.mutation({
-            query: (body:{email:string,password:string}) =>{
+        loginUser: builder.mutation<User,Partial<User>>({
+            query: (data) =>{
                 return{
                     url: 'user/login',
                     method: 'POST',
-                    body,
+                    body:data,
                 }
-            }
+            },
+            invalidatesTags:["User"],
         }),
-        registerUser: builder.mutation({
-            query:(body:{
-                firstname:string,
-                lastname:string,
-                email:string,
-                mobile:string,
-                password:string
-            }) =>{
+        registerUser: builder.mutation<User,Partial<User>>({
+            query:(data) =>{
                 return{
+                    headers:{
+                        'content-type': 'application/json',
+                    },
                     url: 'user/register',
                     method: 'POST',
-                    body,
+                    body:data,
                 }
-            }
+            },
+            invalidatesTags:["User"],
         }),
         
         
